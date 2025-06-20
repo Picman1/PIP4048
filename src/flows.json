@@ -1,0 +1,1079 @@
+[
+    {
+        "id": "3315a673c124dde3",
+        "type": "tab",
+        "label": "PIP4048",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "a26045eb0f6e526d",
+        "type": "tab",
+        "label": "Change inverter mode",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "c93c1d9459481e4c",
+        "type": "tab",
+        "label": "ESP32 Logs",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "59107abb022ace78",
+        "type": "mqtt-broker",
+        "name": "MQTT",
+        "broker": "192.168.1.203",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "cc61fb635e48c817",
+        "type": "ui_tab",
+        "name": "Home",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "8981014bc10e4f13",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#1bbfff",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#0094ce",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "base-font": {
+                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                }
+            },
+            "angularTheme": {
+                "primary": "indigo",
+                "accents": "blue",
+                "warn": "red",
+                "background": "grey",
+                "palette": "light"
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "lockMenu": "false",
+            "allowTempTheme": "true",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "dda3d4d940a9b1df",
+        "type": "ui_group",
+        "name": "Default",
+        "tab": "cc61fb635e48c817",
+        "order": 1,
+        "disp": true,
+        "width": 6,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "a52b9d70f8dca43d",
+        "type": "ui-base",
+        "name": "Dashboard",
+        "path": "/dashboard",
+        "appIcon": "",
+        "includeClientData": true,
+        "acceptsClientConfig": [
+            "ui-notification",
+            "ui-control"
+        ],
+        "showPathInSidebar": false,
+        "headerContent": "page",
+        "navigationStyle": "default",
+        "titleBarStyle": "default",
+        "showReconnectNotification": true,
+        "notificationDisplayTime": 1,
+        "showDisconnectNotification": true,
+        "allowInstall": true
+    },
+    {
+        "id": "250c1463116306c8",
+        "type": "ui-theme",
+        "name": "Default Theme",
+        "colors": {
+            "surface": "#ffffff",
+            "primary": "#0094CE",
+            "bgPage": "#eeeeee",
+            "groupBg": "#ffffff",
+            "groupOutline": "#cccccc"
+        },
+        "sizes": {
+            "density": "default",
+            "pagePadding": "12px",
+            "groupGap": "12px",
+            "groupBorderRadius": "4px",
+            "widgetGap": "12px"
+        }
+    },
+    {
+        "id": "a3b04b5b45e844a5",
+        "type": "ui-page",
+        "name": "Main",
+        "ui": "a52b9d70f8dca43d",
+        "path": "/page1",
+        "icon": "home",
+        "layout": "grid",
+        "theme": "250c1463116306c8",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": "0",
+                "cols": "3"
+            },
+            {
+                "name": "Tablet",
+                "px": "576",
+                "cols": "6"
+            },
+            {
+                "name": "Small Desktop",
+                "px": "768",
+                "cols": "9"
+            },
+            {
+                "name": "Desktop",
+                "px": "1024",
+                "cols": "12"
+            }
+        ],
+        "order": 2,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "675f5510373c0024",
+        "type": "ui-page",
+        "name": "Logs",
+        "ui": "a52b9d70f8dca43d",
+        "path": "/page2",
+        "icon": "log",
+        "layout": "grid",
+        "theme": "250c1463116306c8",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": "0",
+                "cols": "3"
+            },
+            {
+                "name": "Tablet",
+                "px": "576",
+                "cols": "6"
+            },
+            {
+                "name": "Small Desktop",
+                "px": "768",
+                "cols": "9"
+            },
+            {
+                "name": "Desktop",
+                "px": "1024",
+                "cols": "12"
+            }
+        ],
+        "order": 1,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "ed81744368b4dc3e",
+        "type": "ui_tab",
+        "name": "Logs",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "8867cc0f0a14b28a",
+        "type": "ui_group",
+        "name": "Logs",
+        "tab": "ed81744368b4dc3e",
+        "order": 1,
+        "disp": true,
+        "width": "28",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "b7ef8310f46e9d6f",
+        "type": "mqtt in",
+        "z": "3315a673c124dde3",
+        "name": "inverter/data",
+        "topic": "inverter/data",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "59107abb022ace78",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 110,
+        "y": 60,
+        "wires": [
+            [
+                "641ef2fdac39267e",
+                "81aabe64.18e9f",
+                "42e8a79c172d0bf3"
+            ]
+        ]
+    },
+    {
+        "id": "641ef2fdac39267e",
+        "type": "debug",
+        "z": "3315a673c124dde3",
+        "name": "debug 1",
+        "active": false,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 350,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "93edaf35.bb12b",
+        "type": "file",
+        "z": "3315a673c124dde3",
+        "name": "",
+        "filename": "/home/jr/logs/router.log",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": true,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 980,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "238a0338.8d7edc",
+        "type": "function",
+        "z": "3315a673c124dde3",
+        "name": "Add the date & time and topic to the payload",
+        "func": "//Add the date & time to the payload\n\nvar str = msg.mydate + ',' + msg.mytime + ',' + msg.payload;\nmsg.payload = str;\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 60,
+        "wires": [
+            [
+                "e2798c7c779a88ed"
+            ]
+        ]
+    },
+    {
+        "id": "81aabe64.18e9f",
+        "type": "simpletime",
+        "z": "3315a673c124dde3",
+        "name": "",
+        "mydate": true,
+        "myymd": true,
+        "myyear": true,
+        "mymonth": true,
+        "mymonthn": true,
+        "mymonthf": true,
+        "mydom": true,
+        "mydoy": true,
+        "myday": true,
+        "mydayf": true,
+        "myhourpm": true,
+        "myhour": true,
+        "mytime": true,
+        "mytimes": true,
+        "myminute": true,
+        "myminutes": true,
+        "mysecond": true,
+        "mymillis": true,
+        "myepoch": true,
+        "myrawdate": true,
+        "mypm": true,
+        "x": 350,
+        "y": 60,
+        "wires": [
+            [
+                "238a0338.8d7edc"
+            ]
+        ]
+    },
+    {
+        "id": "42e8a79c172d0bf3",
+        "type": "function",
+        "z": "3315a673c124dde3",
+        "name": "ESP32 processor",
+        "func": "const messages = msg.payload.split(\",\");\nconst arr = msg.payload.split(\" \");\n//node.warn(msg.payload);\n\n// Send: [QPIGS], Received: [(234.7 50....\nif(messages[0].includes(\"QPIGS\") == true){\n    if(arr.length > 20){\n        //node.warn (\"apparentPowerUsing: \" + parseInt(arr[8]));\n        flow.set(\"apparentPowerUsing\", parseInt(arr[8]));\n\n        //node.warn (\"batteryLevel: \" + parseInt(arr[13]));\n        flow.set(\"batteryLevel\", parseInt(arr[13]));\n\n        //node.warn(\"apparentPowerPV: \" + parseInt(arr[22]));\n        flow.set(\"apparentPowerPV\", parseInt(arr[22]));\n\n        //node.warn (\"PVInputCurrent: \" + parseInt(arr[15]));\n        flow.set(\"PVInputCurrent\", parseInt(arr[15]));\n    }\n}\nelse if(messages[0].includes(\"QMOD\") == true){\n    //node.warn(arr[3]);\n\n    if(arr[3] == \"[(B].\")\n        flow.set(\"InverterMode\", \"Solar/Battery\");\n    else if(arr[3] == \"[(L].\")\n        flow.set(\"InverterMode\", \"Utility/ESCOM\");\n}\nelse if(messages[0].includes(\"POP00\") == true){\n        flow.set(\"InverterMode\", \"Utility/ESCOM\");\n}\nelse if(messages[0].includes(\"POP01\") == true){\n    if(arr[3] == \"[(B].\")\n        flow.set(\"InverterMode\", \"Solar/Battery\");\n    else if(arr[3] == \"[(L].\")\n        flow.set(\"InverterMode\", \"Utility/ESCOM\");\n}\nelse if(messages[0].includes(\"QPIRI\") == true){\n    node.warn(messages[1]);\n}\nelse{\n    node.error(\"Message NOT found: \" + messages[0], msg);\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 200,
+        "wires": [
+            [
+                "425867e43d7437d2",
+                "551785612e72b95c",
+                "29f30afae716aa4b",
+                "d6b710714598efdb",
+                "968faa33027be90d",
+                "ebb07fde01318107",
+                "5cdad234dcb2691c"
+            ]
+        ]
+    },
+    {
+        "id": "449aef0d23e997a4",
+        "type": "ui_gauge",
+        "z": "3315a673c124dde3",
+        "name": "Power using",
+        "group": "dda3d4d940a9b1df",
+        "order": 0,
+        "width": "3",
+        "height": "3",
+        "gtype": "gage",
+        "title": "Power Using",
+        "label": "W",
+        "format": "{{msg.payload}}",
+        "min": 0,
+        "max": "5000",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "1000",
+        "seg2": "2000",
+        "diff": false,
+        "className": "",
+        "x": 850,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "af1507f632015268",
+        "type": "ui_gauge",
+        "z": "3315a673c124dde3",
+        "name": "Power PV generated",
+        "group": "dda3d4d940a9b1df",
+        "order": 1,
+        "width": "3",
+        "height": "3",
+        "gtype": "gage",
+        "title": "Power Generated",
+        "label": "W",
+        "format": "{{msg.payload}}",
+        "min": 0,
+        "max": "5000",
+        "colors": [
+            "#ca3838",
+            "#e6e600",
+            "#00b500"
+        ],
+        "seg1": "500",
+        "seg2": "1000",
+        "diff": false,
+        "className": "",
+        "x": 880,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "c14ae36b3e21df7a",
+        "type": "ui_gauge",
+        "z": "3315a673c124dde3",
+        "name": "Battery Level",
+        "group": "dda3d4d940a9b1df",
+        "order": 2,
+        "width": "3",
+        "height": "3",
+        "gtype": "gage",
+        "title": "Battery Level",
+        "label": "%",
+        "format": "{{msg.payload}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#ca3838",
+            "#e6e600",
+            "#00b500"
+        ],
+        "seg1": "60",
+        "seg2": "75",
+        "diff": false,
+        "className": "",
+        "x": 850,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "29f30afae716aa4b",
+        "type": "function",
+        "z": "3315a673c124dde3",
+        "name": "Battery Level",
+        "func": "msg.payload = flow.get(\"batteryLevel\");\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 610,
+        "y": 320,
+        "wires": [
+            [
+                "c14ae36b3e21df7a"
+            ]
+        ]
+    },
+    {
+        "id": "425867e43d7437d2",
+        "type": "function",
+        "z": "3315a673c124dde3",
+        "name": "apparentPowerUsing",
+        "func": "msg.payload = flow.get(\"apparentPowerUsing\");\n//node.warn(msg.payload);\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 200,
+        "wires": [
+            [
+                "449aef0d23e997a4"
+            ]
+        ]
+    },
+    {
+        "id": "551785612e72b95c",
+        "type": "function",
+        "z": "3315a673c124dde3",
+        "name": "apparentPowerPV",
+        "func": "msg.payload = flow.get(\"apparentPowerPV\");\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 630,
+        "y": 260,
+        "wires": [
+            [
+                "af1507f632015268"
+            ]
+        ]
+    },
+    {
+        "id": "d6b710714598efdb",
+        "type": "function",
+        "z": "3315a673c124dde3",
+        "name": "PV Input Current",
+        "func": "msg.payload = flow.get(\"PVInputCurrent\");\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 630,
+        "y": 380,
+        "wires": [
+            [
+                "cfbea09c65513b7d"
+            ]
+        ]
+    },
+    {
+        "id": "cfbea09c65513b7d",
+        "type": "ui_text",
+        "z": "3315a673c124dde3",
+        "group": "dda3d4d940a9b1df",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "PV Input Current",
+        "label": "PV Input Current",
+        "format": "{{msg.payload}} A",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 870,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "2ae803244c8e56e4",
+        "type": "ui_text",
+        "z": "3315a673c124dde3",
+        "d": true,
+        "group": "dda3d4d940a9b1df",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "Inverter Mode",
+        "label": "Inverter Mode",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 860,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "e2798c7c779a88ed",
+        "type": "debug",
+        "z": "3315a673c124dde3",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 960,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "968faa33027be90d",
+        "type": "debug",
+        "z": "3315a673c124dde3",
+        "name": "debug 3",
+        "active": false,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 610,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "ebb07fde01318107",
+        "type": "function",
+        "z": "3315a673c124dde3",
+        "d": true,
+        "name": "Inverter Mode",
+        "func": "msg.payload = flow.get(\"InverterMode\");\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 440,
+        "wires": [
+            [
+                "2ae803244c8e56e4"
+            ]
+        ]
+    },
+    {
+        "id": "5cdad234dcb2691c",
+        "type": "ui_template",
+        "z": "3315a673c124dde3",
+        "group": "dda3d4d940a9b1df",
+        "name": "Mode",
+        "order": 6,
+        "width": "0",
+        "height": "0",
+        "format": "<div style=\"display: flex; align-items: center; justify-content: space-between; width: 100%;\">\n    <div style=\"font-size: 24px; font-weight: bold; margin-right: 10px;\">Mode</div>\n    <div id=\"status-icon-container\" style=\"font-size: 50px; text-align: right;\">\n        <i id=\"main-icon\" class=\"fa fa-minus\" style=\"color: grey;\"></i>\n    </div>\n</div>\n\n<script>\n    (function(scope) {\n        scope.$watch('msg', function(msg) {\n            if (msg && typeof msg.payload !== 'undefined') {\n                var mainIconElement = document.getElementById('main-icon');\n                \n                // Reset main icon classes and color\n                mainIconElement.className = ''; \n                mainIconElement.classList.add('fa'); \n                mainIconElement.style.color = 'grey'; \n\n                if (msg.payload === 'Send: [QMOD], Received: [(B].') {\n                    // Battery icon\n                    mainIconElement.classList.add('fa-battery-full'); \n                    mainIconElement.style.color = 'green';\n                } else if (msg.payload === 'Send: [QMOD], Received: [(L].') {\n                    // Lightning icon\n                    mainIconElement.classList.add('fa-bolt'); \n                    mainIconElement.style.color = 'yellowgreen';                    \n                } \n            }\n        });\n    })(scope);\n</script>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 590,
+        "y": 560,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d49fab7a41bcf43f",
+        "type": "ui_switch",
+        "z": "a26045eb0f6e526d",
+        "name": "",
+        "label": "ON for UTIL",
+        "tooltip": "ON for UTIL",
+        "group": "dda3d4d940a9b1df",
+        "order": 3,
+        "width": "3",
+        "height": "3",
+        "passthru": true,
+        "decouple": "false",
+        "topic": "payload",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 290,
+        "y": 60,
+        "wires": [
+            [
+                "2bd5bf378b604aa4",
+                "61760deb6a173296"
+            ]
+        ]
+    },
+    {
+        "id": "61760deb6a173296",
+        "type": "mqtt out",
+        "z": "a26045eb0f6e526d",
+        "name": "ESP32",
+        "topic": "inverter/cmd",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "59107abb022ace78",
+        "x": 520,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "4b4705817ecb4f9a",
+        "type": "toggle",
+        "z": "a26045eb0f6e526d",
+        "name": "",
+        "onOffTopic": "",
+        "onValue": "true",
+        "onType": "bool",
+        "offValue": "true",
+        "offType": "bool",
+        "toggleTopic": "",
+        "toggleValue": "true",
+        "toggleType": "bool",
+        "passOnOff": "",
+        "x": 90,
+        "y": 60,
+        "wires": [
+            [
+                "d49fab7a41bcf43f"
+            ]
+        ]
+    },
+    {
+        "id": "2bd5bf378b604aa4",
+        "type": "debug",
+        "z": "a26045eb0f6e526d",
+        "name": "msg.payload",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "topic",
+        "statusType": "auto",
+        "x": 540,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "40b89025a6c97ff1",
+        "type": "mqtt in",
+        "z": "c93c1d9459481e4c",
+        "name": "inverter/log",
+        "topic": "inverter/log",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "59107abb022ace78",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 100,
+        "y": 60,
+        "wires": [
+            [
+                "7828d7cc9b0c595a",
+                "839784293c0c1940"
+            ]
+        ]
+    },
+    {
+        "id": "7828d7cc9b0c595a",
+        "type": "debug",
+        "z": "c93c1d9459481e4c",
+        "name": "debug 4",
+        "active": false,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 350,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "f810be0e17b314dc",
+        "type": "file",
+        "z": "c93c1d9459481e4c",
+        "name": "",
+        "filename": "/home/jr/logs/Logs.log",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": true,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 980,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ec243b420ebf6c34",
+        "type": "function",
+        "z": "c93c1d9459481e4c",
+        "name": "Add the date & time and topic to the payload",
+        "func": "//Add the date & time to the payload\n\nvar str = msg.mydate + ',' + msg.mytime + ',' + msg.payload;\nmsg.payload = str;\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 60,
+        "wires": [
+            [
+                "f810be0e17b314dc",
+                "912cac7a75422365"
+            ]
+        ]
+    },
+    {
+        "id": "839784293c0c1940",
+        "type": "simpletime",
+        "z": "c93c1d9459481e4c",
+        "name": "",
+        "mydate": true,
+        "myymd": true,
+        "myyear": true,
+        "mymonth": true,
+        "mymonthn": true,
+        "mymonthf": true,
+        "mydom": true,
+        "mydoy": true,
+        "myday": true,
+        "mydayf": true,
+        "myhourpm": true,
+        "myhour": true,
+        "mytime": true,
+        "mytimes": true,
+        "myminute": true,
+        "myminutes": true,
+        "mysecond": true,
+        "mymillis": true,
+        "myepoch": true,
+        "myrawdate": true,
+        "mypm": true,
+        "x": 350,
+        "y": 60,
+        "wires": [
+            [
+                "ec243b420ebf6c34"
+            ]
+        ]
+    },
+    {
+        "id": "912cac7a75422365",
+        "type": "debug",
+        "z": "c93c1d9459481e4c",
+        "name": "debug 5",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 960,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "eefa644576ab5dcc",
+        "type": "inject",
+        "z": "c93c1d9459481e4c",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "QPIRI",
+        "payloadType": "str",
+        "x": 110,
+        "y": 140,
+        "wires": [
+            [
+                "839784293c0c1940",
+                "0c7729a4be4c55f8"
+            ]
+        ]
+    },
+    {
+        "id": "0c7729a4be4c55f8",
+        "type": "mqtt out",
+        "z": "c93c1d9459481e4c",
+        "name": "ESP32",
+        "topic": "inverter/cmd",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "59107abb022ace78",
+        "x": 340,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "e0e2e2e2.f1f1f1",
+        "type": "inject",
+        "z": "c93c1d9459481e4c",
+        "name": "",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 90,
+        "y": 260,
+        "wires": [
+            [
+                "e0e2e2e2.a2a2a2"
+            ]
+        ]
+    },
+    {
+        "id": "e0e2e2e2.a2a2a2",
+        "type": "file in",
+        "z": "c93c1d9459481e4c",
+        "name": "Read CSV File",
+        "filename": "/home/jr/logs/Logs.log",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 290,
+        "y": 260,
+        "wires": [
+            [
+                "e0e2e2e2.b3b3b3"
+            ]
+        ]
+    },
+    {
+        "id": "e0e2e2e2.b3b3b3",
+        "type": "csv",
+        "z": "c93c1d9459481e4c",
+        "name": "Parse CSV",
+        "sep": ",",
+        "hdrin": false,
+        "hdrout": "none",
+        "multi": "mult",
+        "ret": "\\n",
+        "temp": "",
+        "skip": "0",
+        "strings": true,
+        "include_empty_strings": false,
+        "include_null_values": false,
+        "x": 490,
+        "y": 260,
+        "wires": [
+            [
+                "e0e2e2e2.d5d5d5",
+                "bce4cc2de46f6a78"
+            ]
+        ]
+    },
+    {
+        "id": "e0e2e2e2.d5d5d5",
+        "type": "debug",
+        "z": "c93c1d9459481e4c",
+        "name": "Debug CSV Output",
+        "active": true,
+        "x": 730,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "bce4cc2de46f6a78",
+        "type": "ui_table",
+        "z": "c93c1d9459481e4c",
+        "group": "8867cc0f0a14b28a",
+        "name": "",
+        "order": 0,
+        "width": "28",
+        "height": "15",
+        "columns": [],
+        "outputs": 0,
+        "cts": false,
+        "x": 690,
+        "y": 260,
+        "wires": []
+    }
+]
