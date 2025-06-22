@@ -5,6 +5,22 @@
 #include <HTTPClient.h> // For HTTP requests
 #include <Settings.h>
 
+// Function to print the local time
+String printLocalTime() {
+  struct tm timeinfo;
+  if (!getLocalTime(&timeinfo)) {
+    Serial.println("Failed to obtain time (RTC not set or invalid).");
+    return "";
+  }
+
+  char timeStr[64];
+  // Format: YYYY-MM-DD HH:MM:SS (DayOfWeek)
+  strftime(timeStr, sizeof(timeStr), "%Y-%m-%d %H:%M:%S (%A)", &timeinfo);
+  //Serial.print("Current Local Time: ");
+  //Serial.println(timeStr);
+  return timeStr;//formatTimeToString(timeinfo);
+}
+
 /**
  * @brief Converts a struct tm object into a formatted String.
  * * @param timeinfo A constant reference to the struct tm object to format.
@@ -191,7 +207,7 @@ void fetchSunriseSunsetFromAPI() {
         sunriseTimeToday = parseISO8601ToUnix(sunrise_str);
         sunsetTimeToday = parseISO8601ToUnix(sunset_str);
 
-        mqtt_log(printLocalTime() + "Parsed Sunrise (local time): " + String(ctime(&sunriseTimeToday)) + ", Parsed Sunset (local time): " + String(ctime(&sunsetTimeToday)));
+        mqtt_log(printLocalTime() + "Parsed Sunrise (local time): " + String(ctime(&sunriseTimeToday)) + ": Parsed Sunset (local time): " + String(ctime(&sunsetTimeToday)));
 
         lastApiCallTime = time(NULL); // Mark successful API call time
         lastApiCallDay = timeinfo.tm_mday; // Mark the day of the successful API call
@@ -254,22 +270,6 @@ void updateDaytimeFlag() {
       mqtt_log(printLocalTime() + "It is currently NIGHTTIME (fallback: between " + String(FALLBACK_DAYTIME_START_HOUR) + " and " + String(FALLBACK_DAYTIME_END_HOUR) + ").");
     }
   }
-}
-
-// Function to print the local time
-String printLocalTime() {
-  struct tm timeinfo;
-  if (!getLocalTime(&timeinfo)) {
-    Serial.println("Failed to obtain time (RTC not set or invalid).");
-    return "";
-  }
-
-  char timeStr[64];
-  // Format: YYYY-MM-DD HH:MM:SS (DayOfWeek)
-  strftime(timeStr, sizeof(timeStr), "%Y-%m-%d %H:%M:%S (%A)", &timeinfo);
-  //Serial.print("Current Local Time: ");
-  //Serial.println(timeStr);
-  return timeStr;//formatTimeToString(timeinfo);
 }
 
 #endif // TIMERSERVICE_H
