@@ -140,20 +140,19 @@ void sendAndReceive() {
   int apparentPowerUsing = readField(response, 4);
   int apparentPowerPV = readField(response, 19);
   int PVInputCurrent = readField(response, 21);
+  int escomVoltage = readField(response, 1); // Only check it for when Escom is not zero
 
   //String responseQmod = sendCommand(QMOD);
   String responseQmod = sendCommand("QMOD");
 
   if (batPercent <= 55 & batPercent > 1) {
-    if (responseQmod == "(B") {
+    if (responseQmod == "(B" && escomVoltage > 0) {
       mqtt_log("BatPercent is: <= [" + String(batPercent) + "%] and Mode is: Solar/Battery, set it to Utility.");
       //Set output source priority,
       // 00 for utility first,
       //sendCommand(POP00);
       sendCommand("POP00");
-    } //else {
-    //   mqtt_log("BatPercent is: <= 55 and ResponseQmod is: " + responseQmod + ", so do nothing.");
-    // }
+    }
   } else if (batPercent == 100 & response == "(L" & isDaytime == true) {
     //Set output source priority,
     // 01 for solar first,
@@ -209,6 +208,51 @@ void setup() {
   mqtt_log("✅ Setup complete.");
 }
 
+// Get time from local RTC (does NOT contact NTP server)
+bool getLocalTimeOrLog(struct tm* timeinfo) {
+  if (!getLocalTime(timeinfo)) {
+    mqtt_log("Failed to get local time in loop.");
+    delay(1000);  // Wait a bit before retrying
+    return false;
+  }
+  return true;
+}
+
+// Check if we need to re-sync NTP time every hour
+void hourlyNtpResyncIfNeeded(struct tm& timeinfo) {
+  if (WiFi.status() == WL_CONNECTED && timeinfo.tm_min == 0 && timeinfo.tm_sec == 0 && timeinfo.tm_hour != lastCheckedHour_daytimeFlag) {
+    Serial.println("On the dot: Hourly NTP re-sync due...");
+    syncNtpTime();
+    // After re-sync, immediately update the daytime flag
+    updateDaytimeFlag();
+    // Reset the lastCheckedHour_daytimeFlag to current hour
+    lastCheckedHour_daytimeFlag = timeinfo.tm_hour;
+    lastNtpSync = millis(); // Update the last sync time
+  }
+}
+
+// Check if we need to make a daily API call
+void dailyApiCallIfNeeded(struct tm& timeinfo) {
+  if (timeinfo.tm_mday != lastApiCallDay) {
+    Serial.println("New day detected! Fetching new sunrise/sunset times from API...");
+    fetchSunriseSunsetFromAPI();
+    // After fetching, immediately update the daytime flag
+    updateDaytimeFlag();
+    // Reset the lastCheckedHour_daytimeFlag to trigger on the next actual hour change
+    lastCheckedHour_daytimeFlag = timeinfo.tm_hour;
+    lastApiCallDay = timeinfo.tm_mday;
+  }
+}
+
+// Periodically send and receive data from the inverter
+void periodicSendAndReceiveIfNeeded() {
+  unsigned long currentMillis = millis();
+  if (currentMillis - lastSerialSendTime >= serialSendInterval) {
+    lastSerialSendTime = currentMillis;  // Update the last time this ran
+    sendAndReceive();                    // Call your periodic function
+  }
+}
+
 void loop() {
   //ArduinoOTA.handle();
 
@@ -219,39 +263,14 @@ void loop() {
 
   // Get time from local RTC (does NOT contact NTP server)
   struct tm timeinfo;
-  if (!getLocalTime(&timeinfo)) {
-    mqtt_log("Failed to get local time in loop.");
-    delay(1000);  // Wait a bit before retrying
+  if (!getLocalTimeOrLog(&timeinfo)) {
     return;
   }
 
-  // --- Hourly NTP re-sync exactly on the hour ---
-  if (WiFi.status() == WL_CONNECTED && timeinfo.tm_min == 0 && timeinfo.tm_sec == 0 && timeinfo.tm_hour != lastCheckedHour_daytimeFlag) {
-    Serial.println("On the dot: Hourly NTP re-sync due...");
-    syncNtpTime();
-    // After re-sync, immediately update the daytime flag
-    updateDaytimeFlag();
-    // Reset the lastCheckedHour_daytimeFlag to current hour
-    lastCheckedHour_daytimeFlag = timeinfo.tm_hour;
-    lastNtpSync = millis(); // Update the last sync time
-  }
-
-  // --- Daily API Call for Sunrise/Sunset ---
-  // Call API at the start of a new day, or if the current day has changed
-  if (timeinfo.tm_mday != lastApiCallDay) {
-    Serial.println("New day detected! Fetching new sunrise/sunset times from API...");
-    fetchSunriseSunsetFromAPI();
-    // After fetching, immediately update the daytime flag
-    updateDaytimeFlag();
-    // Reset the lastCheckedHour_daytimeFlag to trigger on the next actual hour change
-    lastCheckedHour_daytimeFlag = timeinfo.tm_hour;
-    lastApiCallDay = timeinfo.tm_mday;
-  }
-
-    // --- every 10-Second sendAndReceive Timer ---
-  unsigned long currentMillis = millis();
-  if (currentMillis - lastSerialSendTime >= serialSendInterval) {
-    lastSerialSendTime = currentMillis;  // Update the last time this ran
-    sendAndReceive();                    // Call your periodic function
-  }
+  // Hourly print the current local time
+  hourlyNtpResyncIfNeeded(timeinfo);
+  // Check if we need to make a daily API call
+  dailyApiCallIfNeeded(timeinfo);
+  // Every 10 seconds, send and receive data from the inverter
+  periodicSendAndReceiveIfNeeded();
 }
