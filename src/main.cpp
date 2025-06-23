@@ -104,6 +104,7 @@ void mqttCallback(char* topic, byte* payload, unsigned int length) {
   // Add command handling if needed
 }
 
+// Read a specific field from the response string based on the field index
 int readField(String response, int fieldIndex) {
   int currentIndex = 0;
   int lastSpace = -1;
@@ -129,18 +130,20 @@ int readField(String response, int fieldIndex) {
 
 void sendAndReceive() {
   //String response = sendCommand(QPIGS);
-  String response = sendCommand("QPIGS");
+  String qpigsResponse = sendCommand("QPIGS");
 
-  if(response == "(NAK" || response == "") {
+  if(qpigsResponse == "(NAK" || qpigsResponse == "") {
     Serial.println(printLocalTime() + " ❌ No response or NAK received.");
     return;
   }
 
-  int batPercent = readField(response, 10);
-  int apparentPowerUsing = readField(response, 4);
-  int apparentPowerPV = readField(response, 19);
-  int PVInputCurrent = readField(response, 21);
-  int escomVoltage = readField(response, 1); // Only check it for when Escom is not zero
+  int batPercent = readField(qpigsResponse, 10);
+  int apparentPowerUsing = readField(qpigsResponse, 4);
+  int apparentPowerPV = readField(qpigsResponse, 19);
+  int PVInputCurrent = readField(qpigsResponse, 21);
+
+  qpigsResponse.replace("(",""); // Example response, replace with actual response
+  int escomVoltage = qpigsResponse.substring(0, 4).toInt(); // Extract the first 4 characters as voltage
 
   //String responseQmod = sendCommand(QMOD);
   String responseQmod = sendCommand("QMOD");
@@ -153,7 +156,7 @@ void sendAndReceive() {
       //sendCommand(POP00);
       sendCommand("POP00");
     }
-  } else if (batPercent == 100 & response == "(L" & isDaytime == true) {
+  } else if (batPercent == 100 & qpigsResponse == "(L" & isDaytime == true) {
     //Set output source priority,
     // 01 for solar first,
     mqtt_log("BatPercent is: = 100 and Mode is: Utility, isDaytime = true.");
@@ -174,38 +177,6 @@ void sendAndReceive() {
   Serial.print("apparentPowerUsing: [" + String(apparentPowerUsing) + "], ");
   Serial.print("apparentPowerPV: [" + String(apparentPowerPV) + "], ");
   Serial.println("responseQmod: [" + responseQmod + "].");
-}
-
-void setup() {
-  Serial.begin(115200);
-  // put your setup code here, to run once:
-  Serial.println("Booting up and setting up WIFI.");
-
-  Serial2.begin(2400, SERIAL_8N1, RXD2, TXD2);  // RX=16, TX=17 (modify if needed)
-  Serial2.setRxBufferSize(SERIAL_SIZE_RX);
-
-  SetupWifi();
-  //setupOTA();
-
-  client.setServer(mqtt_server, mqtt_port);
-  client.setCallback(mqttCallback);
-
-  // Perform initial NTP sync
-  syncNtpTime();
-
-  // Get initial time for current day to decide if we need to call API
-  struct tm initialTime;
-  getLocalTime(&initialTime);
-  lastApiCallDay = initialTime.tm_mday;  // Set current day as last API call day
-  lastCheckedHour_daytimeFlag = initialTime.tm_hour;
-
-  // Fetch sunrise/sunset from API immediately after initial NTP sync
-  fetchSunriseSunsetFromAPI();
-
-  // Set the initial daytime flag
-  updateDaytimeFlag();
-
-  mqtt_log("✅ Setup complete.");
 }
 
 // Get time from local RTC (does NOT contact NTP server)
@@ -251,6 +222,38 @@ void periodicSendAndReceiveIfNeeded() {
     lastSerialSendTime = currentMillis;  // Update the last time this ran
     sendAndReceive();                    // Call your periodic function
   }
+}
+
+void setup() {
+  Serial.begin(115200);
+  // put your setup code here, to run once:
+  Serial.println("Booting up and setting up WIFI.");
+
+  Serial2.begin(2400, SERIAL_8N1, RXD2, TXD2);  // RX=16, TX=17 (modify if needed)
+  Serial2.setRxBufferSize(SERIAL_SIZE_RX);
+
+  SetupWifi();
+  //setupOTA();
+
+  client.setServer(mqtt_server, mqtt_port);
+  client.setCallback(mqttCallback);
+
+  // Perform initial NTP sync
+  syncNtpTime();
+
+  // Get initial time for current day to decide if we need to call API
+  struct tm initialTime;
+  getLocalTime(&initialTime);
+  lastApiCallDay = initialTime.tm_mday;  // Set current day as last API call day
+  lastCheckedHour_daytimeFlag = initialTime.tm_hour;
+
+  // Fetch sunrise/sunset from API immediately after initial NTP sync
+  fetchSunriseSunsetFromAPI();
+
+  // Set the initial daytime flag
+  updateDaytimeFlag();
+  
+  mqtt_log("✅ Setup complete.");
 }
 
 void loop() {
