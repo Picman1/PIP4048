@@ -270,6 +270,7 @@ void loop() {
     return;
   }
 
+  
   // Hourly print the current local time
   hourlyNtpResyncIfNeeded(timeinfo);
   // Check if we need to make a daily API call
