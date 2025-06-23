@@ -5,6 +5,10 @@
 #include <HTTPClient.h> // For HTTP requests
 #include <Settings.h>
 
+String getRSSI(){
+  return " Signal strength: [" + String(WiFi.RSSI()) + "] dBm ";
+}
+
 // Function to print the local time
 String printLocalTime() {
   struct tm timeinfo;
@@ -18,7 +22,7 @@ String printLocalTime() {
   strftime(timeStr, sizeof(timeStr), "%Y-%m-%d %H:%M:%S (%A)", &timeinfo);
   //Serial.print("Current Local Time: ");
   //Serial.println(timeStr);
-  return timeStr;//formatTimeToString(timeinfo);
+  return timeStr + getRSSI();//formatTimeToString(timeinfo);
 }
 
 /**
