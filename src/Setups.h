@@ -10,6 +10,10 @@ void SetupWifi() {
   }
   Serial.println("\nWiFi connected");
   Serial.println(WiFi.localIP());
+
+  Serial.print("Signal strength: [");
+  Serial.print(WiFi.RSSI());
+  Serial.println("] dBm");
 }
 
 // void setupOTA() {
