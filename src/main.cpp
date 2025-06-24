@@ -155,12 +155,14 @@ void sendAndReceive() {
       // 00 for utility first,
       sendCommand("POP00");
     }
-  } else if (batPercent == 100 & qpigsResponse == "(L" & isDaytime == true) {
-    mqtt_log("BatPercent is: = 100 and Mode is: Utility, isDaytime = true.");
+  } 
+  else if (batPercent == 100 & qpigsResponse == "(L" & isDaytime == true) 
+  {
+      mqtt_log("BatPercent is: = 100 and Mode is: Utility, isDaytime = true.");
 
-    //Set output source priority,
-    // 01 for solar first,
-    sendCommand("POP01");
+      //Set output source priority,
+      // 01 for solar first,
+      sendCommand("POP01");
   }
   else if(apparentPowerUsing > 5000)
   {
