@@ -145,33 +145,28 @@ void sendAndReceive() {
   qpigsResponse.replace("(",""); // Example response, replace with actual response
   int escomVoltage = qpigsResponse.substring(0, 4).toInt(); // Extract the first 4 characters as voltage
 
-  //String responseQmod = sendCommand(QMOD);
   String responseQmod = sendCommand("QMOD");
 
   if (batPercent <= 55 & batPercent > 1) {
     if (responseQmod == "(B" && escomVoltage > 0) {
       mqtt_log("BatPercent is: <= [" + String(batPercent) + "%] and Mode is: Solar/Battery, set it to Utility.");
+
       //Set output source priority,
       // 00 for utility first,
-      //sendCommand(POP00);
       sendCommand("POP00");
     }
   } else if (batPercent == 100 & qpigsResponse == "(L" & isDaytime == true) {
+    mqtt_log("BatPercent is: = 100 and Mode is: Utility, isDaytime = true.");
+
     //Set output source priority,
     // 01 for solar first,
-    mqtt_log("BatPercent is: = 100 and Mode is: Utility, isDaytime = true.");
     sendCommand("POP01");
-    //sendCommand("POP01" + crc.calculate("POP01") + '\n');
   }
   else if(apparentPowerUsing > 5000)
   {
       // 00 for utility first,
       sendCommand("POP00");
   }
-  //  else {
-  //   sendCommand(POP01);
-  //   readSerial2Response();  // Do not care about result.
-  // }
 
   Serial.print("batPercent: [" + String(batPercent) + "], ");
   Serial.print("apparentPowerUsing: [" + String(apparentPowerUsing) + "], ");
