@@ -82,7 +82,7 @@ void ProcessTopic(String topic, String msg) {
   if (topic == "inverter/cmd" & msg == "true") {
     sendCommand("POP00");  // Set output source priority to utility first
   } else if (topic == "inverter/cmd" & msg == "false") {
-    sendCommand("POP01");  // Set output source priority to solar first
+    sendCommand("POP02");  // Set output source priority to solar first, 02 for SBU priority
   } 
   else if (msg == "Restart") {
       // --- The reboot command ---
@@ -161,8 +161,8 @@ void sendAndReceive() {
       mqtt_log("BatPercent is: = 100 and Mode is: Utility, isDaytime = true.");
 
       //Set output source priority,
-      // 01 for solar first,
-      sendCommand("POP01");
+      // 02 for SBU priority
+      sendCommand("POP02");
   }
   else if(apparentPowerUsing > 5000)
   {

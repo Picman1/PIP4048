@@ -17,9 +17,9 @@ String QPIRI = "\x51\x50\x49\x52\x49\xF8\x54\x0D";                 //Device Rati
 //Setting parameters Command
 String QBV = "\x51\x42\x56\x38\x63\x0D";
 String PF = "\x50\x46\x26\xBD\x0D";                                    //Setting control parameter to default value
-String POP02 = "\x50\x4F\x50\x30\x32\xE2\x0A\x0D";                     //Setting device output source priority
-String POP01 = "\x50\x4F\x50\x30\x31\xD2\x69\x0D";                     //Setting device output source priority
-String POP00 = "\x50\x4F\x50\x30\x30\xC2\x48\x0D";                     //Setting device output source priority
+String POP02 = "\x50\x4F\x50\x30\x32\xE2\x0A\x0D";                     //02 for SBU priority
+String POP01 = "\x50\x4F\x50\x30\x31\xD2\x69\x0D";                     //01 for solar first
+String POP00 = "\x50\x4F\x50\x30\x30\xC2\x48\x0D";                     //00 for utility first
 String PCP00 = "\x50\x43\x50\x30\x30\x8D\x7A\x0D";                     //Setting device charger priority - Set Charging Source Priority: Utility First
 String PCP01 = "\x50\x43\x50\x30\x31\x9D\x5B\x0D";                     //Solar First (The inverter will prioritize charging the batteries from solar power).
 String PCP02 = "\x50\x43\x50\x30\x32\xAD\x38\x0D";                     //Solar and Utility (The inverter will use both solar and utility power to charge the batteries, typically prioritizing solar when available, but supplementing with utility).
