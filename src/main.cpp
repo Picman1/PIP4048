@@ -156,7 +156,7 @@ void sendAndReceive() {
       sendCommand("POP00");
     }
   } 
-  else if (batPercent == 100 & qpigsResponse == "(L" & isDaytime == true) 
+  else if (batPercent == 100 & responseQmod == "(L" & isDaytime == true) 
   {
       mqtt_log("BatPercent is: = 100 and Mode is: Utility, isDaytime = true.");
 
