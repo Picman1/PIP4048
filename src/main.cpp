@@ -142,7 +142,7 @@ void sendAndReceive() {
   int apparentPowerPV = readField(qpigsResponse, 19);
   int PVInputCurrent = readField(qpigsResponse, 21);
 
-  qpigsResponse.replace("(",""); // Example response, replace with actual response
+  qpigsResponse.replace("(",""); // Example response, replace with actual response 230.2
   int escomVoltage = qpigsResponse.substring(0, 4).toInt(); // Extract the first 4 characters as voltage
 
   String responseQmod = sendCommand("QMOD");
@@ -261,7 +261,6 @@ void loop() {
   }
   client.loop();
 
-  // Get time from local RTC (does NOT contact NTP server)
   struct tm timeinfo;
   if (!getLocalTimeOrLog(&timeinfo)) {
     return;
