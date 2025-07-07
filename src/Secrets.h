@@ -1,4 +1,4 @@
-const char* ssid = "LionVirus";
+const char* ssid = "Virus_Ext";
 const char* password = "DieHereIsMyHerder";
 
 const char* mqtt_user = "jr";      // optional
