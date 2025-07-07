@@ -35,24 +35,18 @@ String readSerial2Response(String cmd) {
     return "";
   }
   
+  result.trim();                       // Removes leading/trailing whitespace, including \n, \r
+  result.remove(result.length() - 2);  // Remove last 2 characters, it is 2 byte CRC XMODEM
+
   if (result == "(NAK" || result == "") {
     Serial.println(printLocalTime() + " ❌ No response or NAK received.");
     return "";
   }
 
-  result.trim();                       // Removes leading/trailing whitespace, including \n, \r
-  result.remove(result.length() - 2);  // Remove last 2 characters, it is 2 byte CRC XMODEM
-
   mqtt_data(printLocalTime() + "=> Send: [" + cmd + "], Received: [" + result + "].");
 
   return result;
 }
-
-// String sendCommand(String cmd) {
-//   Serial2.write(cmd.c_str());
-//   cmd.remove(cmd.length() - 3);  // Remove last 3 characters
-//   return readSerial2Response(cmd);
-// }
 
 String sendCommand(String cmd) {
   // Copy original command before adding CRC
@@ -131,6 +125,11 @@ int readField(String response, int fieldIndex) {
 void sendAndReceive() {
   //String response = sendCommand(QPIGS);
   String qpigsResponse = sendCommand("QPIGS");
+
+  if (qpigsResponse.length() > 200) {
+    Serial.println(printLocalTime() + " ❌ The string is longer than 200 characters.");
+    return;
+  } 
 
   if(qpigsResponse == "(NAK" || qpigsResponse == "") {
     Serial.println(printLocalTime() + " ❌ No response or NAK received.");

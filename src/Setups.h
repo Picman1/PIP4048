@@ -4,10 +4,20 @@ void SetupWifi() {
   WiFi.config(local_IP, gateway, subnet, primaryDNS);
   WiFi.begin(ssid, password);
   Serial.println("Connecting to WiFi...");
-  while (WiFi.status() != WL_CONNECTED) {
+
+  unsigned long startAttemptTime = millis();
+  const unsigned long timeout = 10000; // 10 seconds
+
+  while (WiFi.status() != WL_CONNECTED && millis() - startAttemptTime < timeout) {
     delay(500);
     Serial.print(".");
   }
+
+  if (WiFi.status() != WL_CONNECTED) {
+    Serial.println("\nFailed to connect. Restarting...");
+    ESP.restart(); // Restart the ESP32
+  }
+
   Serial.println("\nWiFi connected");
   Serial.println(WiFi.localIP());
 
