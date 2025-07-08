@@ -129,9 +129,7 @@ void sendAndReceive() {
   if (qpigsResponse.length() > 200) {
     Serial.println(printLocalTime() + " ❌ The string is longer than 200 characters.");
     return;
-  } 
-
-  if(qpigsResponse == "(NAK" || qpigsResponse == "") {
+  } else if(qpigsResponse == "(NAK" || qpigsResponse == "") {
     Serial.println(printLocalTime() + " ❌ No response or NAK received.");
     return;
   }
@@ -146,7 +144,7 @@ void sendAndReceive() {
 
   String responseQmod = sendCommand("QMOD");
 
-  if (batPercent <= 55 & batPercent > 1) {
+  if (batPercent <= 70 & batPercent > 1) {
     if (responseQmod == "(B" && escomVoltage > 0) {
       mqtt_log("BatPercent is: <= [" + String(batPercent) + "%] and Mode is: Solar/Battery, set it to Utility.");
 
