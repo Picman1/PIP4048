@@ -49,6 +49,7 @@ String readSerial2Response(String cmd) {
 }
 
 String sendCommand(String cmd) {
+  pulseLED();  // Pulse the LED to indicate command sending
   // Copy original command before adding CRC
   String originalCmd = cmd;
 
@@ -218,10 +219,18 @@ void periodicSendAndReceiveIfNeeded() {
   }
 }
 
+void pulseLED() {
+  digitalWrite(2, HIGH);  // Turn the LED on
+  delay(300);             // Wait for 300 milliseconds
+  digitalWrite(2, LOW);   // Turn the LED off
+}
+
 void setup() {
   Serial.begin(115200);
   // put your setup code here, to run once:
   Serial.println("Booting up and setting up WIFI.");
+
+  pinMode(2, OUTPUT); // GPIO2 is usually the onboard LED
 
   Serial2.begin(2400, SERIAL_8N1, RXD2, TXD2);  // RX=16, TX=17 (modify if needed)
   Serial2.setRxBufferSize(SERIAL_SIZE_RX);
@@ -246,7 +255,8 @@ void setup() {
 
   // Set the initial daytime flag
   updateDaytimeFlag();
-  
+  pulseLED();
+
   mqtt_log("✅ Setup complete.");
 }
 
