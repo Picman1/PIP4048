@@ -11,6 +11,7 @@
 #include <TimerService.h>
 #include <Arduino.h>
 #include <CRCService.h>
+#include <esp_ping.h>
 
 String readSerial2Response(String cmd) {
   String result = "";
@@ -235,8 +236,19 @@ void setup() {
   Serial2.begin(2400, SERIAL_8N1, RXD2, TXD2);  // RX=16, TX=17 (modify if needed)
   Serial2.setRxBufferSize(SERIAL_SIZE_RX);
 
+  // 00 for utility first,
+  sendCommand("POP00");
+
   SetupWifi();
   //setupOTA();
+
+  // Ping retry check on startup
+  IPAddress googleDNS(8, 8, 8, 8);
+  if (!pingWithRetry(googleDNS, 5)) {
+    Serial.println("⚠️ Critical: Network unreachable. Rebooting...");
+    delay(2000);
+    ESP.restart();
+  }
 
   client.setServer(mqtt_server, mqtt_port);
   client.setCallback(mqttCallback);
@@ -256,6 +268,12 @@ void setup() {
   // Set the initial daytime flag
   updateDaytimeFlag();
   pulseLED();
+
+  // Initialize the daily restart day tracker
+  struct tm initialRestartTracker;
+  if (getLocalTime(&initialRestartTracker)) {
+    lastRestartDay = initialRestartTracker.tm_mday;
+  }
 
   mqtt_log("✅ Setup complete.");
 }
@@ -277,6 +295,8 @@ void loop() {
   hourlyNtpResyncIfNeeded(timeinfo);
   // Check if we need to make a daily API call
   dailyApiCallIfNeeded(timeinfo);
+  // Check if we need to restart at midnight (00:00)
+  dailyRestartAtMidnightIfNeeded(timeinfo);
   // Every 10 seconds, send and receive data from the inverter
   periodicSendAndReceiveIfNeeded();
 }

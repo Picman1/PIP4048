@@ -71,4 +71,7 @@ const long API_CALL_INTERVAL_SECONDS = 24 * 3600;
 // Make sure to call API at the start of a new day to get correct times for that day
 int lastApiCallDay = -1;
 
+// --- Daily Restart at Midnight (00:00) ---
+int lastRestartDay = -1;  // Tracks the day when the last restart occurred
+
 #endif // SETTINGS_H

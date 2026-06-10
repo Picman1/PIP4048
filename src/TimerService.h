@@ -276,4 +276,41 @@ void updateDaytimeFlag() {
   }
 }
 
+// --- Daily restart at midnight (00:00) ---
+void dailyRestartAtMidnightIfNeeded(struct tm& timeinfo) {
+  if (timeinfo.tm_mday != lastRestartDay && timeinfo.tm_hour == 0 && timeinfo.tm_min == 0) {
+    mqtt_log(printLocalTime() + "🔄 Triggering daily restart at midnight...");
+    delay(1000);  // Give time for MQTT message to be sent
+    ESP.restart();
+  }
+}
+
+// --- Ping retry on startup ---
+bool pingWithRetry(IPAddress ip, int maxRetries = 5) {
+  Serial.print("Attempting to ping ");
+  Serial.print(ip);
+  Serial.print(" (max ");
+  Serial.print(maxRetries);
+  Serial.println(" retries)...");
+  
+  for (int attempt = 1; attempt <= maxRetries; attempt++) {
+    Serial.print("Ping attempt ");
+    Serial.print(attempt);
+    Serial.print("/");
+    Serial.print(maxRetries);
+    Serial.print(" - ");
+    
+    if (ping(ip)) {
+      Serial.println("✅ Ping successful!");
+      return true;
+    } else {
+      Serial.println("❌ Ping failed.");
+      delay(1000);  // Wait 1 second before retrying
+    }
+  }
+  
+  Serial.println("❌ All ping attempts failed!");
+  return false;
+}
+
 #endif // TIMERSERVICE_H
