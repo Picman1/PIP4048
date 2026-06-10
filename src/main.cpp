@@ -14,7 +14,7 @@
 
 void pulseLED() {
   digitalWrite(2, HIGH);  // Turn the LED on
-  delay(300);             // Wait for 300 milliseconds
+  delay(1000);             // Wait for 1000 milliseconds
   digitalWrite(2, LOW);   // Turn the LED off
 }
 
