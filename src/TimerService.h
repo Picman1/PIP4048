@@ -285,31 +285,33 @@ void dailyRestartAtMidnightIfNeeded(struct tm& timeinfo) {
   }
 }
 
-// --- Ping retry on startup ---
+// --- Network connectivity check on startup ---
 bool pingWithRetry(IPAddress ip, int maxRetries = 5) {
-  Serial.print("Attempting to ping ");
+  Serial.print("Attempting to reach ");
   Serial.print(ip);
   Serial.print(" (max ");
   Serial.print(maxRetries);
   Serial.println(" retries)...");
   
   for (int attempt = 1; attempt <= maxRetries; attempt++) {
-    Serial.print("Ping attempt ");
+    Serial.print("Connectivity check attempt ");
     Serial.print(attempt);
     Serial.print("/");
     Serial.print(maxRetries);
     Serial.print(" - ");
     
-    if (ping(ip)) {
-      Serial.println("✅ Ping successful!");
+    // Simple DNS lookup as connectivity check
+    IPAddress resolved;
+    if (WiFi.hostByName("8.8.8.8", resolved)) {
+      Serial.println("✅ DNS lookup successful!");
       return true;
     } else {
-      Serial.println("❌ Ping failed.");
+      Serial.println("❌ DNS lookup failed.");
       delay(1000);  // Wait 1 second before retrying
     }
   }
   
-  Serial.println("❌ All ping attempts failed!");
+  Serial.println("❌ All connectivity checks failed!");
   return false;
 }
 

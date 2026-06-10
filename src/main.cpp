@@ -11,7 +11,12 @@
 #include <TimerService.h>
 #include <Arduino.h>
 #include <CRCService.h>
-#include <esp_ping.h>
+
+void pulseLED() {
+  digitalWrite(2, HIGH);  // Turn the LED on
+  delay(300);             // Wait for 300 milliseconds
+  digitalWrite(2, LOW);   // Turn the LED off
+}
 
 String readSerial2Response(String cmd) {
   String result = "";
@@ -218,12 +223,6 @@ void periodicSendAndReceiveIfNeeded() {
     lastSerialSendTime = currentMillis;  // Update the last time this ran
     sendAndReceive();                    // Call your periodic function
   }
-}
-
-void pulseLED() {
-  digitalWrite(2, HIGH);  // Turn the LED on
-  delay(300);             // Wait for 300 milliseconds
-  digitalWrite(2, LOW);   // Turn the LED off
 }
 
 void setup() {
