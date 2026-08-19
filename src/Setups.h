@@ -1,5 +1,39 @@
 #include <Settings.h>
 
+void WaitForInternet() {
+  Serial.println("\n🌐 Waiting for internet connectivity (testing DNS to 8.8.8.8)...");
+  
+  unsigned long startTime = millis();
+  const unsigned long maxWaitTime = 60000; // 60 seconds max wait
+  int attempts = 0;
+  const int maxAttempts = 10;
+
+  while (attempts < maxAttempts && millis() - startTime < maxWaitTime) {
+    attempts++;
+    
+    IPAddress resolvedIP;
+    Serial.print("   Attempt ");
+    Serial.print(attempts);
+    Serial.print("/");
+    Serial.print(maxAttempts);
+    Serial.print(" - ");
+    
+    // Try DNS lookup to verify internet connectivity
+    if (WiFi.hostByName("8.8.8.8", resolvedIP)) {
+      Serial.println("✅ Internet verified (DNS resolved 8.8.8.8)");
+      return;
+    }
+    
+    Serial.println("❌ DNS lookup failed");
+    
+    if (attempts < maxAttempts) {
+      delay(2000); // Wait 2 seconds before retry
+    }
+  }
+
+  Serial.println("⚠️  Internet connectivity timeout. Continuing anyway (may experience issues)...\n");
+}
+
 void SetupWifi() {
   WiFi.config(local_IP, gateway, subnet, primaryDNS);
   WiFi.begin(ssid, password);
@@ -24,6 +58,9 @@ void SetupWifi() {
   Serial.print("Signal strength: [");
   Serial.print(WiFi.RSSI());
   Serial.println("] dBm");
+
+  // Wait for actual internet connectivity before proceeding
+  WaitForInternet();
 }
 
 // void setupOTA() {
