@@ -240,6 +240,7 @@ void setup() {
 
   // 00 for utility first,
   sendCommand("POP00");
+  pulseLED();
 
   Serial.println("Waiting 10 minutes before connecting to WiFi...");
   delay(10UL * 60UL * 1000UL);
@@ -271,7 +272,6 @@ void setup() {
 
   // Set the initial daytime flag
   updateDaytimeFlag();
-  pulseLED();
 
   // Initialize the daily restart day tracker
   struct tm initialRestartTracker;
