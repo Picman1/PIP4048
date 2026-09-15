@@ -1,37 +1,38 @@
 #include <Settings.h>
+#include <ESP32Ping.h>
 
 void WaitForInternet() {
-  Serial.println("\n🌐 Waiting for internet connectivity (testing DNS to 8.8.8.8)...");
+  Serial.print("\nWaiting for a ping reply from MQTT server ");
+  Serial.println(mqtt_server);
   
   unsigned long startTime = millis();
   const unsigned long maxWaitTime = 60000; // 60 seconds max wait
   int attempts = 0;
-  const int maxAttempts = 10;
+  const int maxAttempts = 60;
 
   while (attempts < maxAttempts && millis() - startTime < maxWaitTime) {
     attempts++;
     
-    IPAddress resolvedIP;
     Serial.print("   Attempt ");
     Serial.print(attempts);
     Serial.print("/");
     Serial.print(maxAttempts);
     Serial.print(" - ");
     
-    // Try DNS lookup to verify internet connectivity
-    if (WiFi.hostByName("8.8.8.8", resolvedIP)) {
-      Serial.println("✅ Internet verified (DNS resolved 8.8.8.8)");
+    // Send one ping to check whether the MQTT server is reachable.
+    if (Ping.ping(mqtt_server, 1)) {
+      Serial.println("MQTT server replied to ping.");
       return;
     }
     
-    Serial.println("❌ DNS lookup failed");
+    Serial.println("No ping reply from MQTT server.");
     
     if (attempts < maxAttempts) {
-      delay(2000); // Wait 2 seconds before retry
+      delay(1000); // Wait 1 seconds before retry
     }
   }
 
-  Serial.println("⚠️  Internet connectivity timeout. Continuing anyway (may experience issues)...\n");
+  Serial.println("MQTT server ping timeout. Continuing anyway...\n");
 }
 
 void SetupWifi() {
@@ -59,7 +60,7 @@ void SetupWifi() {
   Serial.print(WiFi.RSSI());
   Serial.println("] dBm");
 
-  // Wait for actual internet connectivity before proceeding
+  // Wait for a ping reply from the MQTT server before proceeding.
   WaitForInternet();
 }
 

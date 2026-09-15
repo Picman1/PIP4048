@@ -235,15 +235,15 @@ void setup() {
   Serial2.begin(2400, SERIAL_8N1, RXD2, TXD2);  // RX=16, TX=17 (modify if needed)
   Serial2.setRxBufferSize(SERIAL_SIZE_RX);
 
-  Serial.println("Waiting 1 minutes before sending command to inverter...");
-  delay(1UL * 60UL * 1000UL);
+  Serial.println("Waiting 10 seconds before sending command to inverter...");
+  delay(1UL * 10UL * 1000UL);
 
   // 00 for utility first,
   sendCommand("POP00");
   pulseLED();
 
-  Serial.println("Waiting 10 minutes before connecting to WiFi...");
-  delay(10UL * 60UL * 1000UL);
+  // Serial.println("Waiting 10 minutes before connecting to WiFi...");
+  // delay(10UL * 60UL * 1000UL);
   SetupWifi();
   //setupOTA();
 

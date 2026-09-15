@@ -302,7 +302,7 @@ bool pingWithRetry(IPAddress ip, int maxRetries = 5) {
     
     // Simple DNS lookup as connectivity check
     IPAddress resolved;
-    if (WiFi.hostByName("8.8.8.8", resolved)) {
+    if (WiFi.hostByName(mqtt_server, resolved)) {
       Serial.println("✅ DNS lookup successful!");
       return true;
     } else {
