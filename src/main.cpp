@@ -18,16 +18,52 @@ void pulseLED() {
   digitalWrite(2, LOW);   // Turn the LED off
 }
 
+void logSerial2Response(const String& cmd, const uint8_t* bytes, size_t capturedLength, size_t totalLength) {
+  Serial.print("[UART] RX command=[");
+  Serial.print(cmd);
+  Serial.print("] bytes=");
+  Serial.print(totalLength);
+  if (capturedLength < totalLength) Serial.print(" (capture truncated)");
+  Serial.print(" hex=");
+  if (capturedLength == 0) Serial.print("<none>");
+  for (size_t i = 0; i < capturedLength; i++) {
+    if (i > 0) Serial.print(' ');
+    if (bytes[i] < 0x10) Serial.print('0');
+    Serial.print(bytes[i], HEX);
+  }
+
+  Serial.print(" text=");
+  if (capturedLength == 0) Serial.print("<none>");
+  for (size_t i = 0; i < capturedLength; i++) {
+    uint8_t value = bytes[i];
+    if (value == '\r') Serial.print("\\r");
+    else if (value == '\n') Serial.print("\\n");
+    else if (value == '\t') Serial.print("\\t");
+    else if (value >= 0x20 && value <= 0x7E) Serial.write(value);
+    else Serial.print('.');
+  }
+  Serial.println();
+}
+
 String readSerial2Response(String cmd) {
   String result = "";
+  uint8_t rawResponse[256];
+  size_t capturedLength = 0;
+  size_t totalLength = 0;
   unsigned long timeout = millis() + 2000;  // 2000 milliseconds timeout
   while (millis() < timeout) {
     while (Serial2.available()) {
       char c = Serial2.read();
+      if (capturedLength < sizeof(rawResponse)) {
+        rawResponse[capturedLength++] = static_cast<uint8_t>(c);
+      }
+      totalLength++;
       result += c;
     }
     if (result.endsWith("\r")) break;
   }
+
+  logSerial2Response(cmd, rawResponse, capturedLength, totalLength);
   
   if (result.length() < 4) {
     Serial.println(printLocalTime() + " ❌ Response too short or no response received.");
