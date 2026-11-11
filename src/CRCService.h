@@ -36,7 +36,7 @@ bool isValidStringMessageWithCRC(const String* message) {
 
   // Prepare buffer
   uint8_t buffer[256];
-  if (totalLength > sizeof(buffer)) return false;  // Avoid overflow
+  if (totalLength >= sizeof(buffer)) return false;  // Reserve space for the null terminator.
 
   message->getBytes(buffer, totalLength + 1); // +1 for null terminator
 

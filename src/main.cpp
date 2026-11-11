@@ -12,10 +12,17 @@
 #include <Arduino.h>
 #include <CRCService.h>
 
-void pulseLED() {
-  digitalWrite(2, HIGH);  // Turn the LED on
-  delay(1000);             // Wait for 1000 milliseconds
-  digitalWrite(2, LOW);   // Turn the LED off
+bool setupComplete = false;
+
+void indicateCrcSuccess() {
+  if (!setupComplete) return;
+
+  for (int i = 0; i < 2; i++) {
+    digitalWrite(2, HIGH);
+    delay(200);
+    digitalWrite(2, LOW);
+    if (i < 1) delay(200);
+  }
 }
 
 void logSerial2Response(const String& cmd, const uint8_t* bytes, size_t capturedLength, size_t totalLength) {
@@ -50,8 +57,8 @@ String readSerial2Response(String cmd) {
   uint8_t rawResponse[256];
   size_t capturedLength = 0;
   size_t totalLength = 0;
-  unsigned long timeout = millis() + 2000;  // 2000 milliseconds timeout
-  while (millis() < timeout) {
+  const unsigned long startTime = millis();
+  while (millis() - startTime < 2000UL) {
     while (Serial2.available()) {
       char c = Serial2.read();
       if (capturedLength < sizeof(rawResponse)) {
@@ -61,8 +68,8 @@ String readSerial2Response(String cmd) {
       result += c;
     }
     if (result.endsWith("\r")) break;
+    delay(1);
   }
-
   logSerial2Response(cmd, rawResponse, capturedLength, totalLength);
   
   if (result.length() < 4) {
@@ -72,13 +79,13 @@ String readSerial2Response(String cmd) {
 
   if (isValidStringMessageWithCRC(&result)) {
     Serial.println(printLocalTime() + " ✅ CRC is valid.");
+    indicateCrcSuccess();
   } else {
     Serial.println(printLocalTime() + " ❌ CRC is INVALID.");
     return "";
   }
   
-  result.trim();                       // Removes leading/trailing whitespace, including \n, \r
-  result.remove(result.length() - 2);  // Remove last 2 characters, it is 2 byte CRC XMODEM
+  result.remove(result.length() - 3, 3);  // Remove the 2 CRC bytes and trailing carriage return.
 
   if (result == "(NAK" || result == "") {
     Serial.println(printLocalTime() + " ❌ No response or NAK received.");
@@ -91,16 +98,28 @@ String readSerial2Response(String cmd) {
 }
 
 String sendCommand(String cmd) {
-  pulseLED();  // Pulse the LED to indicate command sending
   // Copy original command before adding CRC
   String originalCmd = cmd;
 
   // Calculate CRC
   uint8_t buffer[64];
   size_t len = cmd.length();
-  if (len > sizeof(buffer)) len = sizeof(buffer);  // Safety check
+  if (len >= sizeof(buffer)) {
+    Serial.println("❌ UART command is too long to calculate CRC safely.");
+    return "";
+  }
 
-  cmd.getBytes(buffer, len + 1);  // +1 ensures null terminator for safety
+  size_t staleBytes = 0;
+  while (Serial2.available() > 0) {
+    Serial2.read();
+    staleBytes++;
+  }
+  if (staleBytes > 0) {
+    Serial.printf("⚠️ Discarded %u stale UART RX bytes before command [%s].\n",
+                  static_cast<unsigned int>(staleBytes), originalCmd.c_str());
+  }
+
+  cmd.getBytes(buffer, sizeof(buffer));
   uint16_t crc = crcXmodem(buffer, len);
 
   // Append CRC and \r to the command
@@ -112,7 +131,8 @@ String sendCommand(String cmd) {
   Serial2.write(cmd.c_str(), cmd.length());
 
   // Read response using original (non-CRC) command for context
-  return readSerial2Response(originalCmd);
+  String response = readSerial2Response(originalCmd);
+  return response;
 }
 
 void ProcessTopic(String topic, String msg) {
@@ -262,21 +282,21 @@ void periodicSendAndReceiveIfNeeded() {
 }
 
 void setup() {
+  pinMode(2, OUTPUT); // GPIO2 is usually the onboard LED
+  digitalWrite(2, HIGH);
+
   Serial.begin(115200);
   // put your setup code here, to run once:
   Serial.println("Booting up.");
 
-  pinMode(2, OUTPUT); // GPIO2 is usually the onboard LED
-
-  Serial2.begin(2400, SERIAL_8N1, RXD2, TXD2);  // RX=16, TX=17 (modify if needed)
   Serial2.setRxBufferSize(SERIAL_SIZE_RX);
+  Serial2.begin(2400, SERIAL_8N1, RXD2, TXD2);  // RX=16, TX=17 (modify if needed)
 
-  Serial.println("Waiting 10 seconds before sending command to inverter...");
-  delay(1UL * 10UL * 1000UL);
+  Serial.println("Waiting 2 seconds before sending command to inverter...");
+  delay(2UL * 1000UL);
 
   // 00 for utility first,
   sendCommand("POP00");
-  pulseLED();
 
   // Serial.println("Waiting 10 minutes before connecting to WiFi...");
   // delay(10UL * 60UL * 1000UL);
@@ -316,6 +336,8 @@ void setup() {
   }
 
   mqtt_log("✅ Setup complete.");
+  setupComplete = true;
+  digitalWrite(2, LOW);
 }
 
 void loop() {
