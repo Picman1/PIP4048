@@ -17,12 +17,9 @@ bool setupComplete = false;
 void indicateCrcSuccess() {
   if (!setupComplete) return;
 
-  for (int i = 0; i < 2; i++) {
-    digitalWrite(2, HIGH);
-    delay(200);
-    digitalWrite(2, LOW);
-    if (i < 1) delay(200);
-  }
+  digitalWrite(2, HIGH);
+  delay(200);
+  digitalWrite(2, LOW);
 }
 
 void logSerial2Response(const String& cmd, const uint8_t* bytes, size_t capturedLength, size_t totalLength) {
@@ -291,9 +288,6 @@ void setup() {
 
   Serial2.setRxBufferSize(SERIAL_SIZE_RX);
   Serial2.begin(2400, SERIAL_8N1, RXD2, TXD2);  // RX=16, TX=17 (modify if needed)
-
-  Serial.println("Waiting 2 seconds before sending command to inverter...");
-  delay(2UL * 1000UL);
 
   // 00 for utility first,
   sendCommand("POP00");
