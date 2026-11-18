@@ -226,6 +226,10 @@ void sendAndReceive() {
       // 00 for utility first,
       sendCommand("POP00");
   }
+  else if(apparentPowerPV > 5000 & PVInputCurrent > 10)
+  {
+      mqtt_log("Do nothing, PVInputCurrent is: [" + String(PVInputCurrent) + "], apparentPowerPV is: [" + String(apparentPowerPV) + "].");
+  }
 
   Serial.print("batPercent: [" + String(batPercent) + "], ");
   Serial.print("apparentPowerUsing: [" + String(apparentPowerUsing) + "], ");
