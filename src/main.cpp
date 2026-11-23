@@ -206,16 +206,16 @@ void sendAndReceive() {
 
   if (batPercent <= 70 & batPercent > 1) {
     if (responseQmod == "(B" && escomVoltage > 0) {
-      mqtt_log("BatPercent is: <= [" + String(batPercent) + "%] and Mode is: Solar/Battery, set it to Utility.");
+      mqtt_log("BatPercent is: <= [" + String(batPercent) + "%] and Mode is: Solar/Battery, set it to Utility,.");
 
       //Set output source priority,
       // 00 for utility first,
       sendCommand("POP00");
     }
   } 
-  else if (batPercent == 100 & responseQmod == "(L" & isDaytime == true) 
+  else if (batPercent == 90 & responseQmod == "(L" & isDaytime == true) 
   {
-      mqtt_log("BatPercent is: = 100 and Mode is: Utility, isDaytime = true.");
+      mqtt_log("BatPercent is: = 90 and Mode is: Utility, isDaytime = true.");
 
       //Set output source priority,
       // 01 for solar first
