@@ -204,7 +204,12 @@ void sendAndReceive() {
 
   String responseQmod = sendCommand("QMOD");
 
-  if (batPercent <= 70 & batPercent > 1) {
+  if(apparentPowerUsing > 5000)
+  {
+      // 00 for utility first,
+      sendCommand("POP00");
+  }
+  else if (batPercent <= 70 & batPercent > 1) {
     if (responseQmod == "(B" && escomVoltage > 0) {
       mqtt_log("BatPercent is: <= [" + String(batPercent) + "%] and Mode is: Solar/Battery, set it to Utility,.");
 
@@ -213,24 +218,15 @@ void sendAndReceive() {
       sendCommand("POP00");
     }
   } 
-  else if (batPercent == 90 & responseQmod == "(L" & isDaytime == true) 
+  else if (batPercent == 100 & responseQmod == "(L" & isDaytime == true) 
   {
-      mqtt_log("BatPercent is: = 90 and Mode is: Utility, isDaytime = true.");
+      mqtt_log("BatPercent is: = 100 and Mode is: Utility, isDaytime = true.");
 
       //Set output source priority,
       // 01 for solar first
       sendCommand("POP01");
   }
-  else if(apparentPowerUsing > 5000)
-  {
-      // 00 for utility first,
-      sendCommand("POP00");
-  }
-  else
-  {
-      mqtt_log("Do nothing.");
-  }
-
+  
   Serial.print("batPercent: [" + String(batPercent) + "], ");
   Serial.print("apparentPowerUsing: [" + String(apparentPowerUsing) + "], ");
   Serial.print("apparentPowerPV: [" + String(apparentPowerPV) + "], ");
